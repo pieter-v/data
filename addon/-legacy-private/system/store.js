@@ -221,8 +221,9 @@ Store = Service.extend({
 
     if (DEBUG) {
       this._trackedAsyncRequests = [];
-      this._trackAsyncRequestStart = (label) => {
-        let trace = 'set `store._generateStackTracesForTrackedRequests = true;` to get a detailed trace for where this request originated';
+      this._trackAsyncRequestStart = label => {
+        let trace =
+          'set `store._generateStackTracesForTrackedRequests = true;` to get a detailed trace for where this request originated';
 
         if (this._generateStackTracesForTrackedRequests) {
           try {
@@ -234,13 +235,13 @@ Store = Service.extend({
 
         let token = Object.freeze({
           label,
-          trace
+          trace,
         });
 
         this._trackedAsyncRequests.push(token);
         return token;
       };
-      this._trackAsyncRequestEnd = (token) => {
+      this._trackAsyncRequestEnd = token => {
         let index = this._trackedAsyncRequests.indexOf(token);
 
         if (index !== -1) {
@@ -254,8 +255,8 @@ Store = Service.extend({
         let isSettled = tracked.length === 0;
 
         if ((this.isDestroying || this.isDestroyed) && !isSettled) {
-          throw new Error('Async Request leaks detected:\n\t - ' +
-            tracked.map(o => o.label).join('\n\t - ')
+          throw new Error(
+            'Async Request leaks detected:\n\t - ' + tracked.map(o => o.label).join('\n\t - ')
           );
         }
 
