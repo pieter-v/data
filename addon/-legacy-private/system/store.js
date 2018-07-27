@@ -220,9 +220,37 @@ Store = Service.extend({
     this._serializerCache = Object.create(null);
 
     if (DEBUG) {
+      this._trackedAsyncRequests = [];
+      this._trackAsyncRequestStart = (label) => {
+        let trace = 'set `store._generateStackTracesForTrackedRequests = true;` to get a detailed trace for where this request originated';
+
+        if (this._generateStackTracesForTrackedRequests) {
+          try {
+            throw new Error(`EmberData TrackedRequest: ${label}`);
+          } catch (e) {
+            trace = e;
+          }
+        }
+
+        let token = Object.freeze({
+          label,
+          trace
+        });
+
+        this._trackedAsyncRequests.push(token);
+        return token;
+      };
+      this._trackAsyncRequestEnd = (token) => {
+        let index = this._trackedAsyncRequests.indexOf(token);
+
+        if (index !== -1) {
+          this._trackedAsyncRequests.splice(index, 1);
+        }
+      };
+
       this.__asyncRequestCount = 0;
       this.__asyncWaiter = () => {
-        return this.__asyncRequestCount === 0;
+        return this._trackedAsyncRequests.length = 0;
       };
 
       Ember.Test.registerWaiter(this.__asyncWaiter);
