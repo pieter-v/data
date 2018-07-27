@@ -256,7 +256,16 @@ Store = Service.extend({
 
       this.__asyncRequestCount = 0;
       this.__asyncWaiter = () => {
-        return this._trackedAsyncRequests.length = 0;
+        let tracked = this._trackedAsyncRequests;
+        let isSettled = tracked.length === 0;
+
+        if ((this.isDestroying || this.isDestroyed) && !isSettled) {
+          throw new Error('Async Request leaks detected:\n\t - ' +
+            tracked.map(o => o.label).join('\n\t - ')
+          );
+        }
+
+        return isSettled;
       };
 
       Ember.Test.registerWaiter(this.__asyncWaiter);
