@@ -156,24 +156,12 @@ export default class ManyRelationship extends Relationship {
   }
 
   computeChanges(recordDatas: RelationshipRecordData[] = []) {
-    let members = this.canonicalMembers;
-    let recordDatasToRemove: RelationshipRecordData[] = [];
-    let recordDatasSet = setForArray(recordDatas);
-
-    members.forEach(member => {
-      if (recordDatasSet.has(member)) {
-        return;
-      }
-
-      recordDatasToRemove.push(member);
-    });
-
-    this.removeCanonicalRecordDatas(recordDatasToRemove);
-
+    const members = this.canonicalMembers.toArray();
+    for (let i = members.length - 1; i >= 0; i--) {
+      this.removeCanonicalRecordData(members[i]);
+    }
     for (let i = 0, l = recordDatas.length; i < l; i++) {
-      let recordData = recordDatas[i];
-      this.removeCanonicalRecordData(recordData);
-      this.addCanonicalRecordData(recordData, i);
+      this.addCanonicalRecordData(recordDatas[i], i);
     }
   }
 
