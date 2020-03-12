@@ -465,23 +465,47 @@ export default class RecordDataDefault implements RelationshipRecordData {
   }
 
   /**
-    Computes the set of internal models reachable from `this` across exactly one
+    Iterates over the set of internal models reachable from `this` across exactly one
     relationship.
-
-    @return {Array} An array containing the internal models that `this` belongs
-    to or has many.
-
   */
-  _directlyRelatedRecordDatas(): RecordData[] {
-    let array = [];
+  _directlyRelatedRecordDatasIterable = () => {
+    const relationships = Object.values(this._relationships.initializedRelationships) as Relationship[];
 
-    this._relationships.forEach((name, rel) => {
-      let members = rel.members.list;
-      let canonicalMembers = rel.canonicalMembers.list;
-      array = array.concat(members, canonicalMembers);
-    });
-    return array;
-  }
+    let i = 0;
+    let j = 0;
+    let k = 0;
+    let nextMember;
+
+    const findNext = () => {
+      while (i < relationships.length) {
+        while (j < 2) {
+          let members = j === 0 ? relationships[i].members.list : relationships[i].canonicalMembers.list;
+          while (k < members.length) {
+            return members[k++];
+          }
+          k = 0;
+          j++;
+        }
+        j = 0;
+        i++;
+      }
+      return undefined;
+    };
+
+    nextMember = findNext();
+
+    return {
+      [Symbol.iterator]() {
+        return {
+          next: () => {
+            const value = nextMember;
+            nextMember = findNext();
+            return { value, done: nextMember === undefined };
+          },
+        };
+      },
+    };
+  };
 
   /**
     Computes the set of internal models reachable from this internal model.
@@ -503,11 +527,7 @@ export default class RecordDataDefault implements RelationshipRecordData {
       let node = queue.shift() as RecordDataDefault;
       array.push(node);
 
-      let related = node._directlyRelatedRecordDatas();
-
-      for (let i = 0; i < related.length; ++i) {
-        let recordData = related[i];
-
+      for (const recordData of this._directlyRelatedRecordDatasIterable()) {
         if (recordData instanceof RecordDataDefault) {
           assert('Internal Error: seen a future bfs iteration', recordData._bfsId <= bfsId);
           if (recordData._bfsId < bfsId) {
