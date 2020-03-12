@@ -2017,9 +2017,17 @@ module('integration/relationship/belongs_to Belongs-To Relationships', function(
 
       _cleanupOrphanedRecordDatas() {}
 
-      _directlyRelatedRecordDatas() {
-        return [];
-      }
+      _directlyRelatedRecordDatasIterable = () => {
+        return {
+          [Symbol.iterator]() {
+            return {
+              next: () => {
+                return { value: undefined, done: true };
+              },
+            };
+          },
+        };
+      };
 
       destroy() {
         this.isDestroyed = true;
