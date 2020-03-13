@@ -243,15 +243,3 @@ export default class ManyRelationship extends Relationship {
     }
   }
 }
-
-function setForArray(array) {
-  var set = new OrderedSet();
-
-  if (array) {
-    for (var i = 0, l = array.length; i < l; i++) {
-      set.add(array[i]);
-    }
-  }
-
-  return set;
-}
