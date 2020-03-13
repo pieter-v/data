@@ -3,7 +3,6 @@ import { isNone } from '@ember/utils';
 import { CUSTOM_MODEL_CLASS } from '@ember-data/canary-features';
 import { assertPolymorphicType } from '@ember-data/store/-debug';
 
-import OrderedSet from '../../ordered-set';
 import Relationship from './relationship';
 
 type RelationshipSchema = import('@ember-data/store/-private/ts-interfaces/record-data-schemas').RelationshipSchema;
