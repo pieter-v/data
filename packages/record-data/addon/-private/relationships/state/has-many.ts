@@ -157,7 +157,7 @@ export default class ManyRelationship extends Relationship {
   computeChanges(recordDatas: RelationshipRecordData[] = []) {
     const members = this.canonicalMembers.toArray();
     for (let i = members.length - 1; i >= 0; i--) {
-      this.removeCanonicalRecordData(members[i]);
+      this.removeCanonicalRecordData(members[i], i);
     }
     for (let i = 0, l = recordDatas.length; i < l; i++) {
       this.addCanonicalRecordData(recordDatas[i], i);
