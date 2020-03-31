@@ -474,7 +474,6 @@ export default class RecordDataDefault implements RelationshipRecordData {
     let i = 0;
     let j = 0;
     let k = 0;
-    let nextMember;
 
     const findNext = () => {
       while (i < relationships.length) {
@@ -492,15 +491,12 @@ export default class RecordDataDefault implements RelationshipRecordData {
       return undefined;
     };
 
-    nextMember = findNext();
-
     return {
       [Symbol.iterator]() {
         return {
           next: () => {
-            const value = nextMember;
-            nextMember = findNext();
-            return { value, done: nextMember === undefined };
+            const value = findNext();
+            return { value, done: value === undefined };
           },
         };
       },
