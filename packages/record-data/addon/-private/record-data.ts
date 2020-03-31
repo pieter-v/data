@@ -469,7 +469,8 @@ export default class RecordDataDefault implements RelationshipRecordData {
     relationship.
   */
   _directlyRelatedRecordDatasIterable = () => {
-    const relationships = Object.values(this._relationships.initializedRelationships) as Relationship[];
+    const initializedRelationships = this._relationships.initializedRelationships;
+    const relationships = Object.keys(initializedRelationships).map(key => initializedRelationships[key]);
 
     let i = 0;
     let j = 0;
