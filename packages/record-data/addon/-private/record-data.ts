@@ -492,7 +492,7 @@ export default class RecordDataDefault implements RelationshipRecordData {
     };
 
     return {
-      [Symbol.iterator]() {
+      iterator() {
         return {
           next: () => {
             const value = findNext();
@@ -523,7 +523,9 @@ export default class RecordDataDefault implements RelationshipRecordData {
       let node = queue.shift() as RecordDataDefault;
       array.push(node);
 
-      for (const recordData of this._directlyRelatedRecordDatasIterable()) {
+      const iterator = this._directlyRelatedRecordDatasIterable().iterator();
+      for (let obj = iterator.next(); !obj.done; obj = iterator.next()) {
+        const recordData = obj.value;
         if (recordData instanceof RecordDataDefault) {
           assert('Internal Error: seen a future bfs iteration', recordData._bfsId <= bfsId);
           if (recordData._bfsId < bfsId) {
