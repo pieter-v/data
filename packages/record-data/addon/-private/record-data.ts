@@ -712,6 +712,7 @@ export default class RecordDataDefault implements RelationshipRecordData {
         rel.clear();
       }
     });
+    this.__relationships = null;
 
     let implicitRelationships = this._implicitRelationships;
     this.__implicitRelationships = null;
