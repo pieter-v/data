@@ -29,6 +29,27 @@ const routes = [
       },
     ],
   },
+  {
+    routeName: 'add-children',
+    markers: [
+      {
+        start: 'start-push-initial-payload',
+        label: 'start-push-initial-payload',
+      },
+      {
+        start: 'end-push-initial-payload',
+        label: 'end-push-initial-payload',
+      },
+      {
+        start: 'start-push-update-payload',
+        label: 'start-push-update-payload',
+      },
+      {
+        start: 'end-push-update-payload',
+        label: 'end-push-update-payload',
+      },
+    ],
+  },
 ];
 
 const browser = {

@@ -74,6 +74,8 @@ function createCarsPayload(n) {
     included: [].concat(colors, types, sizes),
   };
   performance.mark('end-fixture-generation');
+  performance.measure('fixture-generation', 'start-fixture-generation', 'end-fixture-generation');
+
   return fixture;
 }
 
