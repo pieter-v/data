@@ -50,6 +50,48 @@ const routes = [
       },
     ],
   },
+  {
+    routeName: 'unload',
+    markers: [
+      {
+        start: 'start-push-payload',
+        label: 'start-push-payload',
+      },
+      {
+        start: 'end-push-payload',
+        label: 'end-push-payload',
+      },
+      {
+        start: 'start-unloadRecord',
+        label: 'start-unloadRecord',
+      },
+      {
+        start: 'end-unloadRecord',
+        label: 'end-unloadRecord',
+      },
+    ],
+  },
+  {
+    routeName: 'destroy',
+    markers: [
+      {
+        start: 'start-push-payload',
+        label: 'start-push-payload',
+      },
+      {
+        start: 'end-push-payload',
+        label: 'end-push-payload',
+      },
+      {
+        start: 'start-destroyRecord',
+        label: 'start-destroyRecord',
+      },
+      {
+        start: 'end-destroyRecord',
+        label: 'end-destroyRecord',
+      },
+    ],
+  },
 ];
 
 const browser = {

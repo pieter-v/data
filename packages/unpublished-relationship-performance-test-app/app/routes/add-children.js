@@ -1,15 +1,14 @@
 import Route from '@ember/routing/route';
 
+import { createParentPayload } from '../utils/createParentPayload';
 import { endTrace } from '../utils/end-trace';
-
-let initialPayload, updatePayload;
 
 export default Route.extend({
   model() {
     performance.mark('start-data-generation');
 
-    initialPayload = createPayload(19600);
-    updatePayload = createPayload(20000);
+    const initialPayload = createParentPayload(19600);
+    const updatePayload = createParentPayload(20000);
 
     performance.mark('end-data-generation');
     performance.measure('data-generation', 'start-data-generation', 'end-data-generation');
@@ -29,31 +28,3 @@ export default Route.extend({
     endTrace();
   },
 });
-
-/** Creates a parent with the number of children equal to `size` */
-function createPayload(size) {
-  const payload = {
-    data: [
-      {
-        id: '1',
-        type: 'parent',
-        attributes: { parentName: 'parent name' },
-        relationships: {
-          children: {
-            data: [],
-          },
-        },
-      },
-    ],
-    included: [],
-  };
-  const relationships = payload.data[0].relationships.children.data;
-  const included = payload.included;
-
-  for (let i = 0; i < size; i++) {
-    relationships.push({ id: i.toString(), type: 'child' });
-    included.push({ id: i.toString(), type: 'child', attributes: { childName: 'child' + i } });
-  }
-
-  return payload;
-}

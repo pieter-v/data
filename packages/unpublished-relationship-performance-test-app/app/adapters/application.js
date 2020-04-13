@@ -1,6 +1,6 @@
 import EmberObject from '@ember/object';
 
-import { resolve } from 'rsvp';
+import { Promise as EmberPromise, resolve } from 'rsvp';
 
 export default class ApplicationMockAdapter extends EmberObject {
   findAll() {
@@ -12,6 +12,9 @@ export default class ApplicationMockAdapter extends EmberObject {
   shouldBackgroundReloadAll() {
     return false;
   }
+  deleteRecord = function() {
+    return EmberPromise.resolve();
+  };
 }
 
 const COLORS = ['red', 'white', 'black', 'pink', 'green', 'blue', 'yellow', 'orange', 'green', 'teal'];
