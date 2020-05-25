@@ -8,6 +8,7 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
+  this.route('materialization');
   this.route('add-children');
 });
 
